@@ -1,0 +1,34 @@
+service:
+  name: appsync-test
+
+plugins:
+  - serverless-appsync-plugin
+
+package:
+  exclude:
+    - node_modules/**
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage,'test'}
+  region: ap-northeast-1
+  profile: default
+
+custom:
+  stack: ${self:service.name}-${self:provider.stage}
+  appSync:
+    name: ${self:custom.stack}-appsync
+    authenticationType: API_KEY
+    mappingTemplatesLocation: mapping-templates
+    mappingTemplates:
+      - dataSource: None
+        type: Mutation
+        field: postMessage
+      - dataSource: None
+        type: Subscription
+        field: postedMessage
+    schema: schema.graphql
+    dataSources:
+      - type: NONE
+        name: None

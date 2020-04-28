@@ -1,0 +1,10 @@
+#if($ctx.error)
+  $util.error($ctx.error.message, $ctx.error.type)
+#end
+
+#set($res = $ctx.result)
+
+$util.qr($res.put("id", $util.autoId()))
+$util.qr($res.put("__typename", "Chat"))
+
+$util.toJson($res)

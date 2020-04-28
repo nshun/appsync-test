@@ -1,0 +1,39 @@
+interface Message {
+  id: ID!
+  text: String!
+}
+
+type Chat implements Message {
+  id: ID!
+  text: String!
+
+  destId: ID!
+}
+
+type Comment implements Message {
+  id: ID!
+  text: String!
+
+  parentId: ID!
+}
+
+type Query
+
+type Mutation {
+  postMessage(
+    text: String!
+    destId: ID
+    parentId: ID
+  ): Message
+}
+
+type Subscription {
+  postedMessage: Message
+    @aws_subscribe(mutations: ["postMessage"])
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
